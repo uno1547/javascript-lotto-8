@@ -5,6 +5,7 @@ class LottoManager {
   constructor() {
     this.lottos = [];
     this.spentMoney = 0;
+    this.winNumbers = [];
   }
   
   // 깊이가 좀 깊은가?
@@ -13,6 +14,7 @@ class LottoManager {
       const input = await Console.readLineAsync("구입금액을 입력해 주세요.\n")
       try {
         if (!this.validateSpentMoney(input)) throw new Error("[ERROR] 구입 금액은 1000원 단위의 숫자로 입력해 주세요.");
+        // 여기서 if 쓰지말고, 그냥 validateSpentMoney에서 에러 던지기해도 잡힐것같은데? 
         this.spentMoney = Number(input);
         break;
       } catch (e) {
@@ -27,6 +29,7 @@ class LottoManager {
     return !isNaN(parsedPrice) && parsedPrice % 1000 === 0 && parsedPrice > 0;
   }
 
+  // 로또 생성
   generateLottos() {
     const printNums = this.spentMoney / 1000;
     Console.print(`${printNums}개를 구매했습니다.`);
@@ -36,6 +39,18 @@ class LottoManager {
       this.lottos.push(new Lotto(combination));
     }
   }
+  // 당첨 번호 입력 받기
+  async getWinNumbers() {
+    while (true) {
+      const input = await Console.readLineAsync("당첨 번호를 입력해 주세요.\n")
+      try {
+        // const numbers = input.split(",").map(Number)
+      } catch (e) {
+
+      }
+    }
+  }
+
 
   /*
   printLottos() {
@@ -44,6 +59,6 @@ class LottoManager {
     }
   }
   */
- 
+
 }
 export default LottoManager;
