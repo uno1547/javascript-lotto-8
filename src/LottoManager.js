@@ -2,11 +2,28 @@ import { Console, MissionUtils } from "@woowacourse/mission-utils";
 import Lotto from "./Lotto.js";
 
 class LottoManager {
+
+  static winningPriceMap = {
+    "1등": 2000000000,
+    "2등": 30000000,
+    "3등": 1500000,
+    "4등": 50000,
+    "5등": 5000
+  }
+
   constructor() {
     this.lottos = [];
     this.spentMoney = 0;
     this.winNumbers = null;
     this.bonusNumber = null;
+    this.result = {
+      "1등": 0,
+      "2등": 0,
+      "3등": 0,
+      "4등": 0,
+      "5등": 0,
+      "winningPrice": 0,
+    }
   }
   
   // 깊이가 좀 깊은가?
@@ -88,6 +105,74 @@ class LottoManager {
 
     if (!Number.isInteger(num)) throw new Error("[ERROR] 보너스 번호는 정수여야 합니다.");
     if (num < 1 || num > 45) throw new Error("[ERROR] 보너스 번호는 1~45 사이여야 합니다.");
+  }
+
+  getGameResult() {
+    // 최종적으로 몇게임이 몇등인지 알아야함
+    for(let i = 0; i < this.lottos.length; i++) {
+      const curLotto = this.lottos[i];
+      this.getLottoResult(curLotto);
+    }
+    Console.print(this.result)
+    this.getPriceResult();
+    // Console.print(this.lottos[0].getNumbers());
+  }
+
+  getLottoResult(lotto) {
+    const lottoNumbers = lotto.getNumbers();
+    let matchCount = 0;
+    let isBonusMatched = false;
+
+    for (let number of lottoNumbers) {
+      if (this.winNumbers.includes(number)) matchCount++;
+      if (number === this.bonusNumber) isBonusMatched = true;
+    }
+    Console.print(`일치하는 번호 개수: ${matchCount}, 보너스 번호 일치: ${isBonusMatched}`);
+    this.updateResult(matchCount, isBonusMatched);
+  }
+
+  updateResult(matchCount, isBonusMatched) {
+    Console.print(`Updating result for matchCount: ${matchCount}, isBonusMatched: ${isBonusMatched}`);
+    switch (Number(matchCount)) {
+      case 6:
+        Console.print(`1등 당첨!`);
+        this.result["1등"]++;
+        break;
+      case 5:
+        if (isBonusMatched) {
+          Console.print(`2등 당첨!`); 
+          this.result["2등"]++;
+        } else {
+          Console.print(`3등 당첨!`);
+          this.result["3등"]++;
+        }
+        break;
+      case 4:
+        Console.print(`4등 당첨!`);
+        this.result["4등"]++;
+        break;
+      case 3:
+        Console.print(`5등 당첨!`);
+        this.result["5등"]++;
+        break;
+      default:
+        break;
+    }
+  }
+
+
+  getPriceResult() {
+    const entries = Object.entries(this.result); // [ ["1등", 0], ["2등", 2], ...]
+    const totalPrice = entries.reduce((acc, [key, value]) => {
+      if (key === "winningPrice") return acc;
+      Console.print(`key: ${key}, value: ${value}`);
+      Console.print(`winningPriceMap[key]: ${LottoManager.winningPriceMap[key]}`);
+      acc += LottoManager.winningPriceMap[key] * value;
+      return acc;
+    }, 0)
+
+    this.result.winningPrice = Number(totalPrice);
+    Console.print(`총 당첨 금액은 ${totalPrice}원 입니다.`);
   }
   /*
   printLottos() {

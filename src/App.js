@@ -13,7 +13,7 @@ class App {
 
     await lottoManager.getBonusNumber();
 
-    
+    lottoManager.getGameResult();
 
   }
 }
