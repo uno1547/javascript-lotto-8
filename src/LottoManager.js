@@ -1,4 +1,5 @@
 import { Console, MissionUtils } from "@woowacourse/mission-utils";
+import Lotto from "./Lotto.js";
 
 class LottoManager {
   constructor() {
@@ -25,5 +26,24 @@ class LottoManager {
     const parsedPrice = Number(price);
     return !isNaN(parsedPrice) && parsedPrice % 1000 === 0 && parsedPrice > 0;
   }
+
+  generateLottos() {
+    const printNums = this.spentMoney / 1000;
+    Console.print(`${printNums}개를 구매했습니다.`);
+
+    for (let i = 0; i < printNums; i++) {
+      const combination = MissionUtils.Random.pickUniqueNumbersInRange(1, 45, 6).sort((a, b) => a - b);
+      this.lottos.push(new Lotto(combination));
+    }
+  }
+
+  /*
+  printLottos() {
+    for (const lotto of this.lottos) {
+      // Console.print(`[${lotto.getNumbers().join(", ")}]`);
+    }
+  }
+  */
+ 
 }
 export default LottoManager;

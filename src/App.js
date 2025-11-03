@@ -6,9 +6,8 @@ class App {
   async run() {
     const lottoManager = new LottoManager();
     await lottoManager.getPurchaseAmout();
-    Console.print("로또 구입이 완료되었습니다.");
-
-    
+    // Console.print("계산이 완료되었습니다.");
+    lottoManager.generateLottos();
   }
 }
 
