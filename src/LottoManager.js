@@ -17,7 +17,7 @@ class LottoManager {
     "5등": 0,
     "winningPrice": 0,
   }
-  
+
   constructor() {
     this.lottos = [];
     this.spentMoney = 0;
@@ -172,7 +172,7 @@ class LottoManager {
     Console.print(`5개 일치 (1,500,000원) - ${this.result["3등"]}개`);
     Console.print(`5개 일치, 보너스 볼 일치 (30,000,000원) - ${this.result["2등"]}개`);
     Console.print(`6개 일치 (2,000,000,000원) - ${this.result["1등"]}개`);
-    Console.print(`총 수익률은 ${this.winningRate.toFixed(2)}%입니다.`);
+    Console.print(`총 수익률은 ${Number(this.winningRate.toFixed(2))}%입니다.`);
   }
 }
 export default LottoManager;
