@@ -10,7 +10,11 @@ class App {
     lottoManager.generateLottos();
 
     await lottoManager.getWinNumbers();
+
+    await lottoManager.getBonusNumber();
+
     
+
   }
 }
 

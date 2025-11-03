@@ -5,7 +5,8 @@ class LottoManager {
   constructor() {
     this.lottos = [];
     this.spentMoney = 0;
-    this.winNumbers = [];
+    this.winNumbers = null;
+    this.bonusNumber = null;
   }
   
   // 깊이가 좀 깊은가?
@@ -26,7 +27,7 @@ class LottoManager {
 
   validateSpentMoney(price) {
     const parsedPrice = Number(price);
-    return !isNaN(parsedPrice) && parsedPrice % 1000 === 0 && parsedPrice > 0;
+    return Number.isInteger(parsedPrice) && parsedPrice % 1000 === 0 && parsedPrice > 0;
   }
 
   // 로또 생성
@@ -68,6 +69,26 @@ class LottoManager {
     if (!isNotDuplicated) throw new Error("[ERROR] 당첨 번호는 중복될 수 없습니다.");
   }
 
+  async getBonusNumber() {
+    while (true) {
+      const input = await Console.readLineAsync("보너스 번호를 입력해 주세요.\n")
+      try {
+        this.validateBonusNumber(input);
+        this.bonusNumber = Number(input);
+        break;
+      } catch (e) {
+        Console.print(e.message);
+        continue;
+      }
+    }
+  }
+
+  validateBonusNumber(number) {
+    const num = Number(number);
+
+    if (!Number.isInteger(num)) throw new Error("[ERROR] 보너스 번호는 정수여야 합니다.");
+    if (num < 1 || num > 45) throw new Error("[ERROR] 보너스 번호는 1~45 사이여야 합니다.");
+  }
   /*
   printLottos() {
     for (const lotto of this.lottos) {
