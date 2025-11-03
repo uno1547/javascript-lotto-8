@@ -6,22 +6,24 @@ class LottoManager {
     this.spentMoney = 0;
   }
   
+  // 깊이가 좀 깊은가?
   async getPurchaseAmout() {
-    const input = await Console.readLineAsync("구입금액을 입력해 주세요.\n")
-    // if(!this.validateSpentMoney(input)) new Error("[ERROR] 올바른 금액을 입력해 주세요.");
-    if(!this.validateSpentMoney(input)) {
-      Console.print("[ERROR] 올바른 금액을 입력해 주세요.");
-      this.getPurchaseAmout();
-      return;
+    while (true) {
+      const input = await Console.readLineAsync("구입금액을 입력해 주세요.\n")
+      try {
+        if (!this.validateSpentMoney(input)) throw new Error("[ERROR] 구입 금액은 1000원 단위의 숫자로 입력해 주세요.");
+        this.spentMoney = Number(input);
+        break;
+      } catch (e) {
+        Console.print(e.message);
+        continue;
+      }
     }
-    this.spentMoney = parseInt(input, 10);
-    Console.print(`입력한 로또금액은 ${input}입니다.`);
   }
+
   validateSpentMoney(price) {
-    // if(!Number(price)) Console.print("숫자로 입력해주세요")
-    // if(Number(price) % 1000 != 0) Console.print("1000원단위로")
-    return Number(price) && Number(price) % 1000 === 0;
-    // return Number(price) % 1000 === 0 && Number(price) > 0;
+    const parsedPrice = Number(price);
+    return !isNaN(parsedPrice) && parsedPrice % 1000 === 0 && parsedPrice > 0;
   }
 }
 export default LottoManager;
