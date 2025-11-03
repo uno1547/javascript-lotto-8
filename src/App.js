@@ -14,7 +14,7 @@ class App {
     await lottoManager.getBonusNumber();
 
     lottoManager.getGameResult();
-
+    lottoManager.printGameResult();
   }
 }
 

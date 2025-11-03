@@ -24,6 +24,7 @@ class LottoManager {
       "5등": 0,
       "winningPrice": 0,
     }
+    this.winningRate = 0
   }
   
   // 깊이가 좀 깊은가?
@@ -105,6 +106,7 @@ class LottoManager {
 
     if (!Number.isInteger(num)) throw new Error("[ERROR] 보너스 번호는 정수여야 합니다.");
     if (num < 1 || num > 45) throw new Error("[ERROR] 보너스 번호는 1~45 사이여야 합니다.");
+    if (this.winNumbers.includes(num)) throw new Error("[ERROR] 보너스 번호는 기존 당첨 번호와 중복될 수 없습니다.");
   }
 
   getGameResult() {
@@ -172,7 +174,19 @@ class LottoManager {
     }, 0)
 
     this.result.winningPrice = Number(totalPrice);
+    this.winningRate = (totalPrice / this.spentMoney) * 100;
     Console.print(`총 당첨 금액은 ${totalPrice}원 입니다.`);
+  }
+
+  printGameResult() {
+    Console.print("당첨 통계");
+    Console.print("---");
+    Console.print(`3개 일치 (5,000원) - ${this.result["5등"]}개`);
+    Console.print(`4개 일치 (50,000원) - ${this.result["4등"]}개`);
+    Console.print(`5개 일치 (1,500,000원) - ${this.result["3등"]}개`);
+    Console.print(`5개 일치, 보너스 볼 일치 (30,000,000원) - ${this.result["2등"]}개`);
+    Console.print(`6개 일치 (2,000,000,000원) - ${this.result["1등"]}개`);
+    Console.print(`총 수익률은 ${this.winningRate.toFixed(2)}%입니다.`);
   }
   /*
   printLottos() {
