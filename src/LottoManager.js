@@ -45,12 +45,28 @@ class LottoManager {
       const input = await Console.readLineAsync("당첨 번호를 입력해 주세요.\n")
       try {
         // const numbers = input.split(",").map(Number)
+        this.validateWinNumbers(input);
+        this.winNumbers = input.split(",").map(Number);
+        break;
       } catch (e) {
-
+        Console.print(e.message);
+        continue;
       }
     }
   }
 
+  validateWinNumbers(numbers) {
+    const numTokens = numbers.split(",").map(Number);
+    const isLengthValid = numTokens.length === 6;
+    if (!isLengthValid) throw new Error("[ERROR] 당첨 번호는 6개여야 합니다.");
+
+    const isAllinRange = numTokens.every(num => Number.isInteger(num) && num >= 1 && num <= 45);
+    if (!isAllinRange) throw new Error("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+    // if () throw new Error("[ERROR] 당첨 번호는 중복될 수 없습니다.");
+
+    const isNotDuplicated = new Set(numTokens).size === numTokens.length;
+    if (!isNotDuplicated) throw new Error("[ERROR] 당첨 번호는 중복될 수 없습니다.");
+  }
 
   /*
   printLottos() {
