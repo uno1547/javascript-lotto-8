@@ -1,5 +1,15 @@
+import { Console, MissionUtils } from "@woowacourse/mission-utils";
+import Lotto from "./Lotto.js";
+import LottoManager from "./LottoManager.js";
+
 class App {
-  async run() {}
+  async run() {
+    const lottoManager = new LottoManager();
+    await lottoManager.getPurchaseAmout();
+    Console.print("로또 구입이 완료되었습니다.");
+
+    
+  }
 }
 
 export default App;
